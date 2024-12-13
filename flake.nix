@@ -16,7 +16,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-23.11";
   };
 
   outputs = {
@@ -39,16 +39,16 @@
       forAllSystems (system: import ./pkgs nixpkgs.legacyPackages.${system});
     overlays = import ./overlays {inherit inputs;};
     nixosConfigurations = {
-      m3-kratos = nixpkgs.lib.nixosSystem {
+      amd-pc = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
-        modules = [./hosts/m3-kratos];
+        modules = [./hosts/amd-pc];
       };
     };
     homeConfigurations = {
-      "m3tam3re@m3tam3re" = home-manager.lib.homeManagerConfiguration {
+      "luwpy@amd-pc" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages."x86_64-linux";
         extraSpecialArgs = {inherit inputs outputs;};
-        modules = [./home/luwpy-pc/m3-kratos.nix];
+        modules = [./home/luwpy/amd-pc.nix];
       };
     };
   };

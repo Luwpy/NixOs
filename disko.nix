@@ -3,7 +3,7 @@
     disk = {
       main = {
         type = "disk";
-        device = "/dev/sdb";
+        device = "/dev/sda";
         content = {
           type = "gpt";
           partitions = {
@@ -17,72 +17,74 @@
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
-                mountOptions = [ "umask=0077" ];
+                mountOptions = ["umask=0077"];
               };
             };
             root = {
               size = "100%";
               content = {
                 type = "btrfs";
-                extraArgs = [ "-f" ];
+                extraArgs = ["-f"]; # Override existing partition
+                # Subvolumes must set a mountpoint in order to be mounted,
+                # unless their parent is mounted
                 subvolumes = {
-                  
+                  # Subvolume name is different from mountpoint
                   "/rootfs" = {
                     mountpoint = "/";
                   };
+                  # Subvolume name is the same as the mountpoint
+                };
+                # Sub(sub)volume doesn't need a mountpoint as its parent is mounted
 
-                  "/nix" = {
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                    mountpoint = "/nix";
-                  };
-
-                  "/test" = { };
-
-                  "/swap" = {
-                    mountpoint = "/.swapvol";
-                    swap = {
-                      swapfile.size = "20M";
-                      swapfile2.size = "20M";
-                      swapfile2.path = "rel-path";
-                    };
+                # Parent is not mounted so the mountpoint must be set
+                "/nix" = {
+                  mountOptions = ["compress=zstd" "noatime"];
+                  mountpoint = "/nix";
+                };
+                # This subvolume will be created but not mounted
+                "/test" = {};
+                # Subvolume for the swapfile
+                "/swap" = {
+                  mountpoint = "/.swapvol";
+                  swap = {
+                    swapfile.size = "20M";
+                    swapfile2.size = "20M";
+                    swapfile2.path = "rel-path";
                   };
                 };
+              };
 
-                mountpoint = "/partition-root";
-                swap = {
-                  swapfile = {
-                    size = "20M";
-                  };
-                  swapfile1 = {
-                    size = "20M";
-                  };
+              mountpoint = "/partition-root";
+              swap = {
+                swapfile = {
+                  size = "20M";
+                };
+                swapfile1 = {
+                  size = "20M";
                 };
               };
             };
           };
         };
       };
-      sub = {
-        type = "disk";
-        device = "/dev/sda";
-        content = {
-          type = "gpt";
-          partitions = {
-            home = {
-              size = "100%";
-              content = {
-                type = "btrfs";
-                extraArgs = [ "-f" ];
-
-                subvolumes = {
-
-                  "/home" = {
-                    mountOptions = [ "compress=zstd" ];
-                    mountpoint = "/home";
-                  };
-
-                  "/home/user" = { };
+    };
+    home = {
+      type = "disk";
+      device = "/dev/sdb";
+      content = {
+        type = "gpt";
+        partitions = {
+          home = {
+            size = "100%";
+            content = {
+              type = "btrfs";
+              extraArgs = ["-f"];
+              subvolumes = {
+                "/home" = {
+                  mountOptions = ["compress=zstd"];
+                  mountpoint = "/home";
                 };
+                "/home/user" = {};
               };
             };
           };

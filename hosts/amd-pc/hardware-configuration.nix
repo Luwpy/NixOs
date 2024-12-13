@@ -13,6 +13,41 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/e402a4df-2ec7-4335-a7ec-38313c48fc37";
+      fsType = "btrfs";
+      options = [ "subvol=rootfs" ];
+    };
+
+  fileSystems."/nix" =
+    { device = "/dev/disk/by-uuid/e402a4df-2ec7-4335-a7ec-38313c48fc37";
+      fsType = "btrfs";
+      options = [ "subvol=nix" ];
+    };
+
+  fileSystems."/partition-root" =
+    { device = "/dev/disk/by-uuid/e402a4df-2ec7-4335-a7ec-38313c48fc37";
+      fsType = "btrfs";
+    };
+
+  fileSystems."/.swapvol" =
+    { device = "/dev/disk/by-uuid/e402a4df-2ec7-4335-a7ec-38313c48fc37";
+      fsType = "btrfs";
+      options = [ "subvol=swap" ];
+    };
+
+  fileSystems."/home" =
+    { device = "/dev/disk/by-uuid/629c3330-7c71-4dc2-9edd-6353f57b43e4";
+      fsType = "btrfs";
+      options = [ "subvol=home" ];
+    };
+
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/BD45-EA3A";
+      fsType = "vfat";
+      options = [ "fmask=0077" "dmask=0077" ];
+    };
+
   swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

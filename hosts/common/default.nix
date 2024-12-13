@@ -35,12 +35,12 @@
       experimental-features = "nix-command flakes";
       trusted-users = [
         "root"
-        "luwpy"
+        "your-user"
       ]; # Set users that are allowed to use the flake command
     };
     gc = {
       automatic = true;
-      options = "--delete-older-than 15d";
+      options = "--delete-older-than 30d";
     };
     optimise.automatic = true;
     registry =
