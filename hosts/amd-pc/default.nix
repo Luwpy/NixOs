@@ -14,7 +14,7 @@
 #
 # Moreover please update the packages option in your user configuration and add the home-manager options:
 # users.users = {
-#   your-name = {
+#   luwpy = {
 #     isNormalUser = true;
 #     initialPassword = "12345";
 #     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
@@ -25,8 +25,8 @@
 # home-manager = {
 #   useUserPackages = true;
 #   extraSpecialArgs = { inherit inputs outputs; };
-#   users.your-name =
-#     import ../../home/your-name/${config.networking.hostName}.nix;
+#   users.luwpy =
+#     import ../../home/luwpy/${config.networking.hostName}.nix;
 # };
 #
 # Please also change your hostname accordingly:

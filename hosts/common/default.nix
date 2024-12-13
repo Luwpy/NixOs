@@ -35,7 +35,7 @@
       experimental-features = "nix-command flakes";
       trusted-users = [
         "root"
-        "your-user"
+        "luwpy"
       ]; # Set users that are allowed to use the flake command
     };
     gc = {
